@@ -1,0 +1,285 @@
+
+--- PAGE 1 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 1
+ YUKTI
+SIH26043 — Antigravity Implementation Instruction Document
+Complete requirements + implementation boundaries for the existing YUKTI project
+Purpose: Give Antigravity a precise implementation brief so it understands the complete SIH26043 expected
+solution and adds only the missing functionality.
+NON-NEGOTIABLE: Existing YUKTI features/functions must NOT be modified, redesigned, replaced, deleted, or
+broken. Antigravity must first inspect the current project and implement only missing functionality.
+Problem Statement: SIH26043 — A digital platform to crowdsource societal challenges and facilitate collaborative
+problem solving through universities and industry partnerships.
+Project: YUKTI — Youth for Unified Knowledge Transformation & Innovation
+
+--- PAGE 2 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 2
+1. SIH26043 — What Must Be Built
+The problem statement calls for a comprehensive Societal Innovation Collaboration Portal connecting societal challenges
+with universities, industry/innovation partners and government monitoring, and tracking the journey toward validated and
+deployable solutions.
+Seven required components:
+ Citizen Engagement Module
+ AI-enabled Problem Management Module
+ University Collaboration Module
+ Industry Partnership Module
+ Project Lifecycle Management System
+ Visual Analytics Dashboard
+ Notification and Communication System
+The current YUKTI project already contains substantial workflow functionality. The goal is to complete the
+remaining SIH requirements without disturbing working features.
+
+--- PAGE 3 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 3
+2. EXISTING YUKTI WORK — PROTECTED
+Treat the following as existing/protected functionality. Reuse it; do not rewrite it merely to satisfy the remaining
+requirements.
+ Citizen problem submission with text, location and multimedia evidence.
+ AI categorization, prioritization and duplicate/similarity detection.
+ Human validation/review flow.
+ University expertise matching/recommendation and university acceptance.
+ Multidisciplinary student/faculty team and mentor workflow.
+ Solution proposal workflow.
+ Industry/startup/CSR/research collaboration workflow.
+ Project workspace and milestones.
+ Prototype development, pilot testing and expert validation.
+ Deployment and impact tracking.
+Rule: Even if an existing function needs integration, do not replace its implementation. Extend it only where
+required to connect a genuinely missing SIH component.
+
+--- PAGE 4 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 4
+3. MASTER INSTRUCTION FOR ANTIGRAVITY
+Before writing or changing code, inspect the complete YUKTI codebase: routes, components, APIs, database models,
+authentication, dashboards and current workflows.
+Then follow this sequence:
+ Audit: identify what is already implemented.
+ Map: map current functions to the seven SIH26043 components.
+ Gap analysis: list only missing capabilities.
+ Implement gaps: add only those missing capabilities.
+ Reuse: reuse existing components, APIs, database models and UI.
+ Regression safety: verify existing flows still work exactly as before.
+ No unnecessary redesign: do not change existing UI, routes, API contracts or database behavior unless integration
+strictly requires it.
+ No duplication: if an equivalent feature exists, integrate it instead of creating a second version.
+Implementation principle: EXTEND → INTEGRATE → PRESERVE.
+
+--- PAGE 5 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 5
+4. COMPONENT 1 — CITIZEN ENGAGEMENT MODULE
+SIH requires citizens, community groups, Panchayati Raj Institutions, Urban Local Bodies and government departments to
+submit societal challenges with multimedia evidence, geographical location and supporting information.
+Already protected: problem submission, location and multimedia evidence.
+After inspection, add only missing pieces such as:
+ Supporting document upload if missing.
+ Citizen view of submitted challenges and current status.
+ Additional-information/evidence request flow if missing.
+ Citizen-facing status/notification integration if missing.
+ Do not replace the current report/submission flow.
+Target journey: Submit → Receive ID → Track status → Respond to information request → See progress → Receive
+outcome.
+
+--- PAGE 6 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 6
+5. COMPONENT 2 — AI-ENABLED PROBLEM MANAGEMENT
+Required: automatic categorization, prioritization, deduplication and routing of validated challenges to suitable universities
+based on subject expertise and institutional capabilities.
+Already protected: categorization, prioritization, duplicate detection and university matching.
+Only complete missing integration:
+ AI processing status.
+ Explainable reason for categorization/recommendation where possible.
+ Structured matching using domain, sub-domain, required skills, departments, research areas and institutional capabilities.
+ Routing only after required validation.
+ Persist structured AI outputs for dashboards and matching.
+ Human review path when AI confidence is low.
+Important: The recommendation should explain why a university was recommended; it should not be a
+black-box name generator.
+
+--- PAGE 7 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 7
+6. COMPONENT 3 — UNIVERSITY COLLABORATION MODULE
+Universities must review assigned challenges, form multidisciplinary teams, assign faculty mentors, manage project
+workflows and submit solution proposals.
+Already protected: university matching, acceptance, team/mentor workflow, project workspace and solution
+proposal flow.
+Only complete missing pieces:
+ University assigned-challenge inbox if missing.
+ Accept / decline / clarification action if missing.
+ Team/member management gaps.
+ Structured proposal version/status tracking if missing.
+ University-side project progress visibility.
+ Do not replace the existing university workflow.
+
+--- PAGE 8 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 8
+7. COMPONENT 4 — INDUSTRY PARTNERSHIP MODULE
+The platform must support industries, startups, MSMEs, CSR organizations, research institutions and innovation hubs for
+mentoring, co-development, funding, prototyping, pilot implementation and technology transfer.
+Existing context: collaboration is already part of the YUKTI workflow. Inspect what is actually implemented before
+adding anything.
+Potential missing pieces:
+ Partner profile with expertise/resources/contribution types.
+ Discover eligible verified challenges/projects.
+ Express interest / offer support.
+ Contribution types: mentorship, technology, funding, equipment, prototyping, pilot, implementation, technology transfer.
+ Project-level partner assignment and role visibility.
+ Partner communication inside the project.
+ Integrate with the existing project workspace; do not create an unrelated marketplace.
+
+--- PAGE 9 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 9
+8. COMPONENT 5 — PROJECT LIFECYCLE MANAGEMENT
+The lifecycle system must monitor milestones, deliverables, approvals, documentation, testing outcomes,
+intellectual-property generation and implementation status.
+Already protected: workspace, milestones, prototype, pilot testing, expert validation, deployment and impact
+tracking.
+Complete only missing controls:
+ Deliverables attached to milestones.
+ Due dates, owners and completion status.
+ Approval/review states.
+ Central project documentation.
+ Testing outcomes and pilot results.
+ Validation decision and evidence.
+ IP outcomes: patent, research paper, open-source, technology transfer, startup, licensing, etc.
+ Implementation/deployment status.
+ Project audit/history timeline.
+Suggested lifecycle: Submitted → Validated → Assigned → Accepted → Planning → Development → Testing →
+Pilot → Validation → Deployment → Closed.
+
+--- PAGE 10 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 10
+9. COMPONENT 6 — VISUAL ANALYTICS DASHBOARD
+Government departments need real-time insight into submissions, university participation, industry collaboration, thematic
+trends, project completion and measurable social outcomes.
+If analytics already exist, do not redesign them. Add only missing metrics and connect them to real database
+values.
+Required coverage:
+ Total challenges and verification status.
+ Domain-wise distribution: education, healthcare, agriculture, water, sanitation, environment, rural livelihoods,
+accessibility, urban infrastructure and public service delivery.
+ District-wise distribution.
+ University participation.
+ Industry/partner participation.
+ Active/completed projects and completion rate.
+ Prototype/pilot/validated/deployed counts.
+ Innovation outcomes.
+ Patents and other IP outcomes.
+ Startups created.
+ Community impact.
+Never hard-code fake production statistics into the analytics dashboard.
+
+--- PAGE 11 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 11
+10. COMPONENT 7 — NOTIFICATION & COMMUNICATION
+The platform must enable seamless interaction among citizens, universities, industry partners, mentors and government
+departments throughout the project lifecycle.
+Add only the missing communication layer:
+ In-app notification center.
+ Event-driven status notifications.
+ Assignment notifications.
+ Additional-information requests.
+ Milestone reminders.
+ Approval/review notifications.
+ Pilot/testing updates.
+ Validation/deployment updates.
+ Role-based visibility.
+ Read/unread state.
+Keep communication tied to real project events; do not create unnecessary social-media-style features.
+
+--- PAGE 12 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 12
+11. CROSS-CUTTING REQUIREMENTS
+ Role-based access: Citizen, University, Student/Faculty, Industry/Partner and Government/Admin should see
+appropriate actions/data.
+ Traceability: important status changes should record timestamp and actor.
+ One source of truth: problem, university, project and partner records must remain consistent.
+ Security: protect uploaded evidence and private institutional information.
+ Validation: unverified problems must not appear as officially validated challenges.
+ Scalability: design for many challenges/universities/projects, not only demo records.
+ Accessibility: preserve the planned multilingual, citizen-friendly experience.
+ Demo data: clearly label seeded/public-data-derived records; never misrepresent them as real citizen complaints.
+
+--- PAGE 13 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 13
+12. COPY-PASTE INSTRUCTION FOR ANTIGRAVITY
+Use the following as the final project instruction:
+“First inspect the complete existing YUKTI codebase and identify which SIH26043 requirements are already
+implemented. DO NOT modify, rewrite, replace, delete, rename or redesign any existing working feature,
+function, component, API, route or database behavior. DO NOT create duplicate versions of existing
+functionality. Reuse the existing implementation wherever possible. Prepare a gap list against the seven
+SIH26043 Expected Solution components. Implement ONLY the missing functionality from that gap list.
+Integrate new functionality with existing workflows without breaking them. Before changing shared code,
+check all existing consumers/dependencies. After implementation, test all existing major flows and confirm
+their behavior is unchanged. If a requirement is already satisfied by an existing feature, leave that
+feature untouched and only connect it to a new missing module when necessary.”
+Definition of done: Every SIH26043 Expected Solution component is covered, existing YUKTI functionality
+remains intact, missing functionality is integrated, and one complete problem-to-solution journey can be
+demonstrated.
+
+--- PAGE 14 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 14
+13. SAFE IMPLEMENTATION ORDER
+1. Codebase audit
+Inspect current routes, components, APIs, DB models and role flows.
+2. Gap report
+Map current features to the seven SIH26043 components.
+3. Data/integration layer
+Add only missing entities/fields/endpoints required by missing modules.
+4. Industry gaps
+Complete partner profiles, offers/contributions and project association if missing.
+5. Lifecycle gaps
+Complete deliverables, approvals, documents, testing/IP/implementation tracking if
+missing.
+6. Analytics gaps
+Connect dashboard to real DB data and missing SIH metrics.
+7. Notification gaps
+Add event-driven in-app communication for missing events.
+8. Cross-role integration
+Ensure citizen ↔ university ↔ partner ↔ government visibility is consistent.
+9. Regression testing
+Verify existing YUKTI features still work exactly as before.
+10. Final demo
+Run one complete problem from submission through matching, project progress,
+validation and impact.
+At every step, check whether the function already exists before creating anything new.
+
+--- PAGE 15 ---
+YUKTI  SIH26043  Antigravity Implementation Instructions
+Page 15
+14. FINAL SIH26043 CHECKLIST
+Citizen engagement
+Submission + evidence + location + supporting information
+AI problem management
+Categorization + prioritization + deduplication + routing
+University collaboration
+Review + teams + mentors + project workflow + proposals
+Industry partnership
+Mentor + co-develop + fund + prototype + pilot + transfer
+Project lifecycle
+Milestones + deliverables + approvals + docs + testing + IP + implementation
+Analytics
+Challenges + domains + districts + universities + partners + progress + outcomes +
+impact
+Notifications
+Role-based event notifications and project communication
+Protection
+No breaking changes to existing YUKTI features
+End goal: Societal Problem → AI Understanding → Validation → University Match → Collaborative Project →
+Development → Testing/Pilot → Validation → Deployment → Measurable Community Impact.
+Source checked: current SIH26043 public problem-statement record and current SIH 2026 archives. SIH26043 is a software problem
+statement from the Government of Jharkhand. The requirements above are converted into implementation instructions rather than
+reproduced as a long quotation.

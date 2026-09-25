@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YUKTI — National Problem-to-Innovation Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="admin.css" />
+<!-- Leaflet & ECharts Libraries -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<!-- ==================================================================
+     NAVBAR — inline SVG logo per brand spec:
+     crescent ring gradient (indigo -> teal), teal leaf/swoosh,
+     royal-blue stem, indigo head node.
+================================================================== -->
+<header class="navbar">
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+  <div class="brand">
+    <svg width="38" height="41" viewBox="0 0 145 155" aria-label="YUKTI logo">
+      <!-- bulb outline: true circular arc (center 65,55 r=40), open at top-right for the circuit trace -->
+      <path d="M103.64 44.65 A40 40 0 1 1 61.51 15.15" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/>
+      <!-- circuit trace exiting the gap, fanning out to 3 open nodes -->
+      <path d="M99 40 L116 24 L116 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M103 49 L126 49 L126 32" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M99 60 L120 68 L130 68" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="116" cy="8" r="5.5" fill="none" stroke="#fff" stroke-width="3.5"/>
+      <circle cx="126" cy="29" r="5.5" fill="none" stroke="#fff" stroke-width="3.5"/>
+      <circle cx="130" cy="68" r="5.5" fill="none" stroke="#fff" stroke-width="3.5"/>
+      <!-- bold solid Y filament, flat-edged (matches brand master file) -->
+      <polygon points="37.5,31.46 48.5,24.54 70.5,59.54 59.5,66.46" fill="#fff"/>
+      <polygon points="92.5,31.46 81.5,24.54 59.5,59.54 70.5,66.46" fill="#fff"/>
+      <path d="M58.5 55 L71.5 55 L71.5 88 L65 96 L58.5 88 Z" fill="#fff"/>
+      <!-- screw base -->
+      <rect x="53" y="94" width="24" height="7" rx="2.5" fill="#fff"/>
+      <rect x="54" y="104" width="22" height="6" rx="2.5" fill="#fff"/>
+      <path d="M55 112 Q65 122 75 112 L75 115 Q65 126 55 115 Z" fill="#fff"/>
+    </svg>
+    <div class="brand-text">
+      <span class="name">YUKTI</span>
+      <span class="sub">GOVT PORTAL</span>
+    </div>
+  </div>
+  <div class="nav-right" style="display:flex;align-items:center;gap:12px;">
+    <button class="reg-req-btn" id="headerRegBtn" type="button" onclick="switchTab('registration')" style="display:flex;align-items:center;gap:8px;background:rgba(0,210,255,0.12);border:1px solid rgba(0,210,255,0.4);color:#00d2ff;padding:8px 14px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s ease;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      <span>Signup Requests</span>
+      <span id="headerRegBadge" style="background:#EF4444;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:12px;margin-left:2px;">0</span>
+    </button>
+    <button class="officer-pill" id="officerPill" type="button" aria-haspopup="dialog">
+      <div class="officer-avatar">RS</div>
+      <div class="who">
+        <b>Rekha Sharma</b>
+        <span>District Nodal Officer</span>
+      </div>
+    </button>
+  </div>
+</header>
+
+<!-- ================= TAB NAVIGATION ================= -->
+<nav class="tabbar">
+  <div class="tabbar-inner" id="tabbar"></div>
+</nav>
+
+<!-- ================= DRAWER (hamburger side menu) ================= -->
+<div class="drawer-backdrop" id="drawerBackdrop">
+  <nav class="drawer-panel" id="drawerPanel"></nav>
+</div>
+
+<main class="container">
+
+  <!-- ============================================================
+       VIEW 1 — DASHBOARD OVERVIEW
+  ============================================================ -->
+  <section class="view active" id="view-dashboard">
+    <div class="section-head">
+      <div>
+        <h2>Dashboard Overview</h2>
+        <p>Live snapshot of societal challenges moving through the YUKTI pipeline.</p>
+      </div>
+    </div>
+    <div class="kpi-grid" id="kpiGrid"></div>
+
+    <div class="section-head" style="margin-top:8px;">
+      <div>
+        <h2 style="font-size:17px;">Recently Submitted</h2>
+        <p>Newest crowdsourced challenges awaiting review.</p>
+      </div>
+    </div>
+    <div class="grid" id="recentGrid"></div>
+  </section>
+
+  <!-- ============================================================
+       VIEW 2 — ALL PROBLEMS FEED
+  ============================================================ -->
+  <section class="view" id="view-feed">
+    <div class="section-head">
+      <div>
+        <h2>All Problems Feed</h2>
+        <p>Every challenge crowdsourced by citizens across the network.</p>
+      </div>
+    </div>
+    <div class="filters" id="feedFilters"></div>
+    <div class="grid" id="feedGrid"></div>
+  </section>
+
+  <!-- ============================================================
+       VIEW 3 — VERIFICATION QUEUE
+  ============================================================ -->
+  <section class="view" id="view-verify">
+    <div class="section-head">
+      <div>
+        <h2>Verification Queue &amp; Proposal Approvals</h2>
+        <p>Review citizen problem submissions &amp; university technical proposals with uploaded documents.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-bottom:16px;">
+      <button class="btn btn-primary btn-sm" id="btnShowVerifyQueue" onclick="showVerifySubtab('problems')">Pending Citizen Problems</button>
+      <button class="btn btn-outline btn-sm" id="btnShowProposals" onclick="showVerifySubtab('proposals')">📜 Approve Proposals (University Document Uploads)</button>
+    </div>
+
+    <div id="verifyList"></div>
+    <div id="proposalsList" style="display:none;" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px;"></div>
+  </section>
+
+  <!-- ============================================================
+       VIEW 4 — UNIVERSITY-INDUSTRY COLLABORATION HUB
+  ============================================================ -->
+  <section class="view" id="view-collab">
+    <div class="section-head">
+      <div>
+        <h2>University-Industry Collaboration Hub</h2>
+        <p>Track a verified challenge from open pool to funded pilot.</p>
+      </div>
+    </div>
+    <div class="kanban" id="kanbanBoard"></div>
+  </section>
+
+  <!-- ============================================================
+       VIEW 5 — IMPACT ANALYTICS
+  ============================================================ -->
+  <section class="view" id="view-impact">
+    <div class="section-head">
+      <div>
+        <h2>Impact Analytics</h2>
+        <p>System-wide view of citizens, partners, projects and outcomes — every figure below is computed live from the YUKTI database.</p>
+      </div>
+      <div id="impactLastUpdated" class="impact-meta"></div>
+    </div>
+
+    <div class="impact-filters" id="impactFilters">
+      <label>From <input type="date" id="impactFromDate" /></label>
+      <label>To <input type="date" id="impactToDate" /></label>
+      <label>State/location contains <input type="text" id="impactStateFilter" placeholder="e.g. Jharkhand" /></label>
+      <label>Sector <select id="impactSectorFilter"><option value="">All sectors</option></select></label>
+      <label>Project status <select id="impactStatusFilter"><option value="">All</option><option value="active">Active</option><option value="completed">Completed</option></select></label>
+      <button class="btn btn-teal btn-sm" id="impactApplyFilters" type="button">Apply</button>
+      <button class="btn btn-sm" id="impactResetFilters" type="button">Reset</button>
+    </div>
+
+    <div id="impactLoadState" class="impact-loadstate" style="display:none;">Loading impact analytics…</div>
+    <div id="impactErrorState" class="impact-loadstate impact-error" style="display:none;"></div>
+
+    <div class="stat-strip" id="impactStrip"></div>
+
+    <div class="echarts-grid">
+      <div class="chart-card">
+        <h3 class="chart-title">Impact Overview</h3>
+        <p class="chart-sub">Problems submitted vs projects initiated/completed, month over month.</p>
+        <div id="chartTrendLine" class="echarts-box"></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Sector-wise Impact</h3>
+        <p class="chart-sub">Real problem-domain taxonomy — where activity is concentrated.</p>
+        <div id="chartDomainBar" class="echarts-box"></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Project Status</h3>
+        <p class="chart-sub">Actual backend project status values (no invented stages).</p>
+        <div id="chartProjectStatus" class="echarts-box"></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Geographical Impact</h3>
+        <p class="chart-sub" id="geographyNote">Top locations by submitted location text.</p>
+        <div id="chartDistrictBar" class="echarts-box"></div>
+      </div>
+    </div>
+
+    <div class="echarts-grid" style="margin-top:20px;">
+      <div class="chart-card impact-unsupported" id="investmentCard">
+        <h3 class="chart-title">Investment Flow</h3>
+        <p class="chart-sub" id="investmentNote"></p>
+      </div>
+      <div class="chart-card impact-unsupported" id="ruralUrbanCard">
+        <h3 class="chart-title">Rural vs Urban Impact</h3>
+        <p class="chart-sub" id="ruralUrbanNote"></p>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-top:20px;">
+      <h3 class="chart-title">Key Outcomes</h3>
+      <p class="chart-sub">Measurable results recorded against real projects.</p>
+      <div class="outcome-grid" id="outcomeGrid"></div>
+    </div>
+
+    <div class="chart-card" style="margin-top:20px;">
+      <h3 class="chart-title">Challenges &amp; Alerts</h3>
+      <p class="chart-sub">Every alert below is generated from an explicit backend rule — nothing here is invented.</p>
+      <div class="alert-list" id="alertList"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIEW: MAP VIEW (Satellite & OSM Interactive Map)
+  ============================================================ -->
+  <section class="view" id="view-map">
+    <div class="section-head">
+      <div>
+        <h2>National Problem Map View</h2>
+        <p>Interactive satellite map showing real-time community challenges and status across districts.</p>
+      </div>
+    </div>
+    <div class="map-filters" id="mapFilters"></div>
+    <div class="map-container-layout">
+      <div class="map-frame-wrap">
+        <div id="adminMapContainer" style="width:100%; height:550px; border-radius:12px; overflow:hidden;"></div>
+      </div>
+      <div class="map-sidebar">
+        <h3 style="font-size:15px;font-weight:800;color:var(--indigo);margin-bottom:12px;">Active Problems (<span id="mapCount">0</span>)</h3>
+        <div id="mapSidebarList" class="map-sidebar-list"></div>
+      </div>
+    </div>
+  </section>
+  <!-- ============================================================
+       VIEW 6 — ARCHITECTURE & PITCH (Platform Blueprint)
+  ============================================================ -->
+  <section class="view" id="view-architecture">
+    <div class="section-head">
+      <div>
+        <h2>Architecture &amp; Pitch</h2>
+        <p>The end-to-end system blueprint, in one screen.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3 style="font-size:14px;font-weight:800;color:var(--indigo);margin-bottom:14px;">High-Level Pipeline</h3>
+      <div class="arch-flow" id="archFlow"></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3 style="font-size:14px;font-weight:800;color:var(--indigo);margin-bottom:12px;">Key Innovation &amp; Differentiators</h3>
+        <ul class="pitch-list" id="innovationList"></ul>
+      </div>
+      <div class="card">
+        <h3 style="font-size:14px;font-weight:800;color:var(--indigo);margin-bottom:12px;">Monetisation &amp; Sustainability</h3>
+        <ul class="pitch-list" id="monetisationList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIEW — REGISTRATION REQUESTS (UNIVERSITY & INDUSTRY SIGNUPS)
+  ============================================================ -->
+  <section class="view" id="view-registration">
+    <div class="section-head">
+      <div>
+        <h2>University & Industry Registration Requests</h2>
+        <p>Review, verify, and approve incoming signup requests from Universities and Industry partners.</p>
+      </div>
+      <button class="btn btn-outline" onclick="fetchLivePendingUsers()" style="display:flex;align-items:center;gap:6px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6"/><path d="M2 11.5a10 10 0 0 1 18.8-4.3L21.5 8M22 12.5a10 10 0 0 1-18.8 4.2L2.5 16"/></svg>
+        Refresh Requests
+      </button>
+    </div>
+    <div id="pendingUsersContainer" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; margin-top: 16px;">
+      <!-- Dynamically rendered pending signup request cards -->
+    </div>
+  <section class="view" id="view-project-manager" style="padding:0;">
+    <iframe id="pm-iframe-admin" src="/project-manager?embed=true&role=admin" style="width: 100%; height: calc(100vh - 120px); border: none; border-radius: 14px; background: #f8fafc;"></iframe>
+  </section>
+
+</main>
+
+<!-- ================= MEDIA / DETAIL MODAL ================= -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<!-- ================= TOAST ================= -->
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

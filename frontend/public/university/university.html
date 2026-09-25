@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YUKTI Govt Portal - University & Student Hub</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="university.css">
+    <script src="/yukti-auth-guard.js" data-allowed-roles="university"></script>
+</head>
+<body>
+
+    <header class="yukti-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-logo">YUKTI</div>
+                <div class="brand-sub">UNIVERSITY PORTAL</div>
+            </div>
+            <nav class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('dashboard-view', event)">📊 Overview</button>
+                <button class="nav-tab" onclick="switchTab('citizen-feed-view', event)">🌐 Problem Feed & Map</button>
+                <button class="nav-tab" onclick="switchTab('university-workspace-view', event)">🎓 University & Student Teams</button>
+                <button class="nav-tab" onclick="switchTab('progress-tracking-view', event)">📈 R&D Progress & Proofs</button>
+                <button class="nav-tab" onclick="switchTab('project-management-view', event)">🗂️ Project Management</button>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">U</div>
+                <div class="user-info">
+                    <span class="user-name">University Coordinator</span>
+                    <span class="user-role">RGPV Nodal Center</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+
+        <section id="dashboard-view" class="tab-content active">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-number">14</span>
+                    <span class="stat-label">Total Citizen Issues Reported</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">Assigned to University R&D</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Industry Mentored / Funded</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">₹ 18.5 L</span>
+                    <span class="stat-label">CSR Grants & Lab Equipment</span>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h2>AI-Categorized Citizen Problems Awaiting Assignment</h2>
+                <div class="problem-list" id="overview-problem-list"></div>
+            </div>
+        </section>
+
+
+        <section id="citizen-feed-view" class="tab-content">
+            <div class="section-header">
+                <h2>Citizen Crowdsourced Problems Feed</h2>
+                <p>Multimedia verified complaints with GPS map tracking and regional telemetry</p>
+            </div>
+
+            <!-- Search by Unique Problem ID or Title -->
+            <div class="search-bar-container" style="margin-bottom: 16px; display: flex; gap: 10px; align-items: center;">
+                <div style="position: relative; flex: 1;">
+                    <input type="text" id="problem-id-search" placeholder="🔍 Search by Unique Problem ID or Title (e.g. YKT-100 or 454d2bbd)..." 
+                           oninput="onSearchInput(event)"
+                           style="width: 100%; padding: 11px 16px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; outline: none; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+                </div>
+                <button class="btn-secondary" onclick="resetFeedFilters()" style="padding: 11px 18px; font-size: 0.85rem; background: #64748b; color: white;">Reset All Filters</button>
+            </div>
+
+            <!-- 10 Official Domains Filter Pills -->
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 0.8rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">Filter by Domain:</label>
+                <div class="filter-pills" id="domain-filter-pills" style="display: flex; flex-wrap: wrap; gap: 6px; margin: 0;">
+                    <button class="pill active" onclick="setDomainFilter('all', event)">All Domains</button>
+                    <button class="pill" onclick="setDomainFilter('Education', event)">Education</button>
+                    <button class="pill" onclick="setDomainFilter('Healthcare', event)">Healthcare</button>
+                    <button class="pill" onclick="setDomainFilter('Agriculture', event)">Agriculture</button>
+                    <button class="pill" onclick="setDomainFilter('Water Management', event)">Water Management</button>
+                    <button class="pill" onclick="setDomainFilter('Sanitation', event)">Sanitation</button>
+                    <button class="pill" onclick="setDomainFilter('Environment', event)">Environment</button>
+                    <button class="pill" onclick="setDomainFilter('Rural Livelihoods', event)">Rural Livelihoods</button>
+                    <button class="pill" onclick="setDomainFilter('Accessibility', event)">Accessibility</button>
+                    <button class="pill" onclick="setDomainFilter('Urban Infrastructure', event)">Urban Infrastructure</button>
+                    <button class="pill" onclick="setDomainFilter('Public Service Delivery', event)">Public Service Delivery</button>
+                </div>
+            </div>
+
+            <!-- Interactive Satellite Map View -->
+            <div id="univ-map-wrapper" style="margin-bottom: 20px; border-radius: 14px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 4px 14px rgba(0,0,0,0.06); background: #0f172a;">
+                <div style="padding: 12px 18px; background: #1e293b; color: #fff; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155;">
+                    <span style="font-weight: 800; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
+                        🗺️ Jharkhand Live GPS Satellite Map & Telemetry
+                    </span>
+                    <span style="font-size: 0.78rem; color: #94a3b8; font-weight: 600;">Click any map pin or 'View Details' to inspect proof evidence</span>
+                </div>
+                <div id="univ-leaflet-map" style="height: 380px; width: 100%;"></div>
+            </div>
+
+            <div class="problem-grid" id="feed-problem-grid"></div>
+        </section>
+
+
+        <section id="university-workspace-view" class="tab-content">
+            <div class="section-card">
+                <h2>Claim Challenge & Assign Multidisciplinary Student Team</h2>
+                <p class="section-desc">Select an AI-routed problem, set faculty mentor, and dynamically add student team members.</p>
+
+                <form id="claim-problem-form">
+                    <div class="form-group">
+                        <label>Select Citizen Problem (Problem ID)</label>
+                        <select id="claim-problem-select" required>
+                            <option value="">-- Choose Problem from Pool --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Faculty Mentor Name</label>
+                            <input type="text" id="mentor-name" placeholder="Dr. A. P. Sharma (Professor)" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Department / Institution</label>
+                            <input type="text" id="univ-dept" placeholder="RGPV - Dept of Civil Engineering" required>
+                        </div>
+                    </div>
+
+                    <h3>Student Team Members (Custom Member Count)</h3>
+                    <div id="dynamic-members-container">
+                        <div class="member-row">
+                            <input type="text" placeholder="Member 1 Name" required>
+                            <input type="text" placeholder="Roll No / Email" required>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" id="add-member-btn">+ Add Another Team Member</button>
+
+                    <button type="submit" class="btn-primary" style="margin-top: 20px; width: 100%;">Claim Challenge & Start Research</button>
+                </form>
+            </div>
+        </section>
+
+
+        <section id="progress-tracking-view" class="tab-content">
+            <div class="section-header">
+                <h2>University R&D Milestone & Progress Tracker</h2>
+                <p>Update research stages, upload prototype images, and submit testing documentation for Industry review.</p>
+            </div>
+
+            <!-- Full Problem + University Team Context Banner -->
+            <div id="rd-problem-context-banner" class="section-card" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; border: 1px solid #334155; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                    <div>
+                        <span id="rd-banner-problem-id" class="badge" style="background:#38bdf8; color:#0f172a; font-weight:800; font-family:monospace; margin-right:8px;">YKT-100</span>
+                        <span id="rd-banner-domain" class="badge" style="background:#334155; color:#e2e8f0;">Urban Infrastructure</span>
+                        <h3 id="rd-banner-title" style="font-size: 1.25rem; font-weight: 700; color: #fff; margin-top: 8px;">Select a project below to view full problem & team record</h3>
+                    </div>
+                    <span id="rd-banner-status" class="badge" style="background:#059669; color:#fff;">Active R&D Track</span>
+                </div>
+
+                <div id="rd-banner-content" style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">
+                    <p>ℹ️ Select an active research project from the dropdown form below, or click <strong>'Complete Records / View Report'</strong> from the Problems Feed or Overview Page to load full problem context and team roster.</p>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3>Submit Research Progress Update</h3>
+                <form id="progress-update-form">
+                    <div class="form-group">
+                        <label>Select Active Research Project</label>
+                        <select id="active-project-select" required onchange="onRDProjectSelectChange(this.value)">
+                            <option value="">-- Select Active Project --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Current Completion Stage (%)</label>
+                            <select id="progress-stage" required>
+                                <option value="30">30% - Initial Research & Feasibility Study</option>
+                                <option value="60">60% - Prototype Built & Field Testing</option>
+                                <option value="100">100% - Full Solution Deployed / Tech Transferred</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Prototype / Research Proof (Image/Doc)</label>
+                            <input type="file" id="proof-image" accept="image/*,.pdf" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Research Work Summary & Milestone Deliverables</label>
+                        <textarea id="progress-notes" rows="3" placeholder="Describe the work done in this milestone..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Post Milestone Update to Industry Portal</button>
+                </form>
+            </div>
+
+            <div class="section-card">
+                <h3>Active University R&D Tracker</h3>
+                <div id="claimed-projects-list"></div>
+            </div>
+        </section>
+
+
+        <section id="funding-workflow-view" class="tab-content">
+            <div class="section-header">
+                <h2>Industry Partnership & Support Pipeline</h2>
+                <p>Track CSR Funding Grants, Lab Equipment Allocations, and Industry Mentor Connects</p>
+            </div>
+
+            <div class="section-card">
+                <h3>Industry Collaboration Breakdown (30% - 30% - 40% Model)</h3>
+                <div class="pipeline-grid" id="pipeline-grid">
+                    </div>
+            </div>
+        </section>
+
+        <section id="project-management-view" class="tab-content" style="padding:0;">
+            <iframe id="pm-iframe-univ" src="/project-manager?embed=true&role=university" style="width: 100%; height: calc(100vh - 100px); border: none; border-radius: 12px; background: #f8fafc;"></iframe>
+        </section>
+
+    </main>
+
+
+    <div id="problem-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 700px; width: 95%;">
+            <div class="modal-header" style="background:#0f172a; color:#fff;">
+                <div>
+                    <div style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+                        <span id="modal-id-badge" class="badge" style="background:#38bdf8; color:#0f172a; font-family:monospace; font-weight:800;">ID: YKT-100</span>
+                        <span id="modal-category-badge" class="badge" style="background:#334155; color:#fff;">Category</span>
+                        <span id="modal-priority-badge" class="badge" style="background:#ef4444; color:#fff;">High Priority</span>
+                    </div>
+                    <h3 id="modal-title" style="font-size:1.15rem; font-weight:700;">Problem Title</h3>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:20px; max-height:75vh; overflow-y:auto;">
+                <div class="meta-row" style="background:#f8fafc; border:1px solid #e2e8f0; padding:14px; border-radius:8px; font-size:0.85rem; margin-bottom:16px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div><strong>Submitted By:</strong> <span id="modal-citizen-name">Citizen Representative</span></div>
+                    <div><strong>Subdomain / Sector:</strong> <span id="modal-subdomain">Water Supply</span></div>
+                    <div><strong>Location:</strong> <span id="modal-location">District, State</span></div>
+                    <div><strong>Population Affected:</strong> <span id="modal-population">100+ Citizens</span></div>
+                    <div style="grid-column: 1 / -1;">
+                        <strong>GPS Coordinates:</strong> <span id="modal-gps">23.3441° N, 85.3096° E</span>
+                        <a id="modal-map-link" href="#" target="_blank" class="map-link" style="margin-left:10px; color:#2563eb; font-weight:bold; text-decoration:underline;">📍 Open Live GPS Map</a>
+                    </div>
+                </div>
+
+                <div class="detail-block" style="margin-bottom:16px;">
+                    <h4 style="font-size:0.9rem; font-weight:700; color:#1e293b; margin-bottom:6px;">Detailed Problem Description & Narrative</h4>
+                    <p id="modal-description" style="font-size:0.88rem; color:#475569; line-height:1.6; background:#fff; padding:12px; border:1px solid #e2e8f0; border-radius:8px;">Detailed narrative...</p>
+                </div>
+
+                <div class="media-section" style="margin-bottom:16px;">
+                    <h4 style="font-size:0.9rem; font-weight:700; color:#1e293b; margin-bottom:8px;">🖼️ Ground Proof Evidence & Media Attachments</h4>
+                    
+                    <!-- Primary Photo Preview -->
+                    <div id="modal-photo-container" style="margin-bottom: 12px;">
+                        <span style="font-size: 0.78rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">📷 Geotagged Field Evidence Photo:</span>
+                        <img id="modal-photo-img" src="" alt="Field Evidence Proof" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 10px; border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
+                    </div>
+
+                    <!-- Video / Audio / Document Media Grid -->
+                    <div id="modal-media-grid" style="display:grid; grid-template-columns: 1fr; gap:10px;">
+                        <div id="modal-video-container" style="display:none; background:#faf5ff; border:1px solid #e9d5ff; padding:10px; border-radius:8px;">
+                            <span style="font-size: 0.78rem; font-weight: 700; color: #6b21a8; display: block; margin-bottom: 4px;">📹 Video Stream Proof:</span>
+                            <video id="modal-video-player" controls style="width:100%; border-radius:6px; max-height:200px;"></video>
+                        </div>
+
+                        <div id="modal-voice-container" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; padding:10px; border-radius:8px;">
+                            <span style="font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 4px;">🎙️ Voice Grievance Recording:</span>
+                            <div id="modal-voice-content" style="font-size: 0.82rem; font-style: italic; color: #1e3a8a;">Original voice captured via AI Voice Assistant</div>
+                        </div>
+
+                        <div id="modal-doc-container" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; padding:10px; border-radius:8px;">
+                            <span style="font-size: 0.78rem; font-weight: 700; color: #166534; display: block; margin-bottom: 4px;">📄 Document Evidence Attachment:</span>
+                            <a id="modal-doc-link" href="#" target="_blank" download style="display:inline-block; background:#166534; color:#fff; font-weight:bold; font-size:0.8rem; padding:6px 14px; border-radius:6px; text-decoration:none;">📥 View / Download Document File</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="modal-footer-actions" style="padding:14px 20px; background:#f8fafc; border-top:1px solid #e2e8f0;">
+                <button class="btn-secondary" onclick="closeModal()">Close</button>
+                <button class="btn-primary" id="modal-action-btn" onclick="closeModal()">Action</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROPOSAL SUBMISSION DOCUMENT UPLOAD MODAL -->
+    <div id="proposal-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width:600px;">
+            <div class="modal-header" style="background:#4f46e5; color:#fff;">
+                <div>
+                    <h3>📜 Submit Technology Proposal to Nodal Officer</h3>
+                    <p style="font-size:0.8rem; margin-top:2px; opacity:0.9;">Upload formal project documentation, technology stack details &amp; implementation plan.</p>
+                </div>
+                <button class="modal-close" onclick="closeProposalModal()">&times;</button>
+            </div>
+            <form id="university-proposal-form" style="padding:20px;">
+                <input type="hidden" id="proposal-problem-id">
+
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-weight:bold; font-size:0.85rem;">Project / Proposal Title</label>
+                    <input type="text" id="proposal-title" placeholder="e.g. IoT Sensor-Based Real-time Water Filtration Pilot" required style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;">
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-weight:bold; font-size:0.85rem;">Technologies Used &amp; Tech Stack</label>
+                    <input type="text" id="proposal-techstack" placeholder="e.g. Embedded C++, LoRaWAN, Python, FastAPI, Solar Cells" required style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;">
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-weight:bold; font-size:0.85rem;">Proposal Abstract &amp; Solution Methodology</label>
+                    <textarea id="proposal-description" rows="3" placeholder="Explain how your university team will solve this problem..." required style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;"></textarea>
+                </div>
+
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label style="font-weight:bold; font-size:0.85rem;">Upload Proposal Document (Any File Type: PDF, DOCX, TXT, ZIP)</label>
+                    <input type="file" id="proposal-file" accept=".pdf,.doc,.docx,.txt,.zip,.png,.jpg" required style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc;">
+                    <span style="font-size:0.75rem; color:#64748b; display:block; margin-top:4px;">This document will be sent to the Admin Verification Queue ('Approve Proposals').</span>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                    <button type="button" class="btn-secondary" onclick="closeProposalModal()">Cancel</button>
+                    <button type="submit" class="btn-primary" style="background:#4f46e5;">Submit Proposal Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/yukti-i18n.js"></script>
+    <script src="university.js"></script>
+</body>
+</html>

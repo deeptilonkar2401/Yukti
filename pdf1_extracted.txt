@@ -1,0 +1,210 @@
+
+--- PAGE 1 ---
+26043 -   |  SIH EducationWorkflow Page 1
+   . 043SIHProblemStatementNo
+  - - -   EducationDomain End to EndExample&  
+ ExpectedWorkflow
+        CitizenProblemselekarValidatedSolutionaurDeploymenttak
+ CoreIdea
+ हमारा  platform   खुदहरा   educationproblem  का   finalproduct  नह
+बनता।
+ Platform   काकामाह: -   real worldproblem  का  collect  कारान->  समाझन->  validate  कारान->  सह
+ /university team 
+ स  match  कारान-> /  industry partners  जोड़ न->   solutionjourney  का  track  कारान->  validation  औरा  impact  ताका
+पहचन।
+1.   - ProblemScenario  असली  EducationProblem
+        मानली
+जिजोएएकाग्रामा
+णसराकारा
+जि!द्यालीयमा$काक्षा6-8     काबहतासजि!द्यार्थी’  Mathematics      मा$लीग्राताराकामाजोराहराहह(। 
+ Teacher       कापसयहपह चननकाकाई   intelligentsystem     नह
+ह जिकाहरा  student  जिकास  concept   मा$कामाजोराह।
+ Citizen     काक्यजिदखुईदताह?
+  StudentA  का  Fractions  नह
+आता।
+  StudentB  का  Percentage   मा$जिदक्काताह।
+  StudentC  का  Algebra  मा$   learninggap ह।
+ Teacher   कापस50-60  studentsह(,   इसजिलीएहरा  student  का
+     learninggapmanuallyidentify   कारानकाजि-नह।
+माहत्!प/ण0:  Citizen  का   solutiondesign        कारानजोरूरा
+नह
+ह।उसका!ली!स्ताजि!कासमास्य, ,  context location  औरा
+ उपलीब्ध   evidencereport  कारानह।
+2.  1 -    Step CitizenProblemSubmit  करता है
+/ /    Citizen teacher Panchayatrepresentativeportal  “परा    ” ReportaSocietalProblem    खुलीताह औरा
+  structuredform  भराताह।
+Field Example
+ ProblemTitle        StudentsinRuralSchoolsAreStrugglingWith
+ MathematicsLearning
+Description  काक्षा6-8    काकाईजि!द्यार्थी’  Mathematics     मा$कामाजोराह(औरा
+    teachersindividuallearninggaps     पहचननह
+पराहह(।
+--- PAGE 2 ---
+26043 -   |  SIH EducationWorkflow Page 2
+Location  ,  , VillageX DistrictY Jharkhand
+Domain Education
+Evidence /  ,  , , /  Assessment resultdata shortvideo photo PDF report
+आजिद
+3.  2 -     Step AIProblemUnderstanding&Categorization
+ Submission   आताह
+  platform  उस   structureddata     मा$बदलीताह औरा /    AI MLpipelineproblem  का , text
+ evidence  औरा  context  स   relevantattributes  जिनकालीता
+ह।
+ : Domain Education
+ - :   / Sub domain SchoolEducation EdTech
+  :     ProblemType LearningAssessment&PersonalisedEducation
+ :  Location DistrictY
+ / :  ( )Severity Priority High example
+  : /  + /  +   +  RequiredSkills AI ML Education Pedagogy DataAnalysis SoftwareDevelopment
+4.  3 -  /   Step Duplicate SimilarProblemCheck
+   मानली
+जिजोएउस
+  district    सपहलीएका    similarproblemreport    हचका
+ह।    Semanticsimilarityengine  दन
+  descriptionscompare    कारासकाताह। :  = 91%. Example Similarity  ताब  system  नई  report  का   existingmaster
+ challenge  स  link   कारासकाताह,        जिजोससएकाह
+समास्यकाजिलीएकाई   disconnectedprojects  नबन$।
+Output
+  +   -> /    ->    ReportA ReportB Same RelatedChallengeCluster OneMasterProblemID
+5.  4 - /  Step Human AuthorityValidation
+ हरा  submission   काताराता  university      काभजोनउजिचतानह
+ह।  /  Authorizedreviewer department   पहलीजोचताह: 
+    समास्य!स्ताजि!काह यनह
+,  evidence    पय7प्ताह यनह
+,  duplicate   ह यनह
+,   औराउसका /  social academicimpact 
+ जिकातानह।
+ StatusFlow
+ ->   -> Submitted UnderReview Verified
+:    Example Schoolauthorityconfirms   जिकालीग्राभग्रा60  students     प्रभजि!ताह(औरा!ता0मान   assessmentprocess
+  mostlymanual   ह।अब  “ ” challenge Verified   हजोताह।
+--- PAGE 3 ---
+26043 -   |  SIH EducationWorkflow Page 3
+6.  5 - Step  सहै /  University ExpertiseMatching
+ अब  platform  प/छताह: “   यहसमास्यका<न-  स
+  university    सबसअच्छ
+ताराह  solve   कारासकाता
+ह?”  Matching  का!ली
+ location    काआधरापरानह
+,  बजि>का /   expertise capabilityprofile     काआधरापराहनचजिहए।
+University Expertise Match
+ UniversityA /  +  + AI ML EdTech Software 92% -  BestMatch
+ UniversityB  +  + Education Pedagogy Assessment 87%
+ UniversityC  + Mechanical Robotics 21% -  WeakMatch
+7.  6 -   Step UniversityAccept  करता है
+  Universitydashboard  “परा    ” NewSocietalChallengeAssigned   आताह।    Authorizedpersonproblem
+, , , ,   description evidence location priority requiredskills  औरा   matchingreason   दखुताह।  University
+ challenge  का  Accept     कारासकाता
+ह य /  clarification rejection   दसकाता
+ह।
+8.  7 -   Step MultidisciplinaryTeamFormation
+  यहका!ली   AIproblem  नह
+ह;  यह   educationproblem   ह जिजोसमा$  technology  औरा  pedagogy     दनका
+जोरूराताह।
+ इसजिलीए    universitymultidisciplinaryteam  बनता
+ह।
+    - /   ComputerScienceStudent AI MLmodel  औरा  backendlogic
+ -   - /  Full StackStudent platform appdevelopment
+    - -   DataScienceStudent student performancedataanalysis
+   - ,  EducationFaculty pedagogy curriculum  औरा  assessmentvalidation
+ /   -  ,  AI MLFaculty modelarchitecture evaluation  औरा  technicalguidance
+ =  +   +  Team Technology DomainExpertise FacultyMentorship
+ यह
+   combinationsolution  “का  ” technicallypossible  “स  ” sociallyuseful  बनताह।
+9.  8 -  Step SolutionProposal
+ Coding     शुरूकारानसपहली    teamsolutionproposal   बनता
+ह।  : “ -   Examplesolution AI BasedMathematics
+   ”.LearningGapDetectionPlatform
+ उदहराण  :studentdata
+Topic Score Interpretation
+Addition 90% Strong
+Fractions 42%  LearningGap
+Percentage 35%  LearningGap
+Algebra 78% Acceptable
+--- PAGE 4 ---
+26043 -   |  SIH EducationWorkflow Page 4
+  Systemteacher    काबतासकाताह: “   StudentA  का
+     +  primarylearninggapFractions Percentage ह;  remedial
+ exercises  का
+  recommendation ”द$।
+10.  9 -  /  /  Step Industry Startup PartnerCollaboration
+ University   कापस  idea  औरा  prototype    क्षामाताहसकाता
+ह,  लीजिकान  , , , cloudinfrastructure deployment datasets
+  productengineering  य   domainmentorship   काजिलीए   externalpartner       का
+जोरूरातापड़ सकाता
+ह।इसजिलीए
+  platformchallenge  का   suitablepartners   काजिलीए  expose  काराताह।
+ ExampleCollaboration
+  ->   + Universityteam AImodel prototype
+  ->   +  EdTechstartup productengineering deploymentsupport
+/  ->   + School Department pilotenvironment feedback
+/  -> Faculty Experts validation
+11.  10 -    Step ProjectWorkspace&Milestones
+ अब  platform  एका    dedicatedprojectworkspace    बनताह ताजिका , ,  communication files decisions  औरा
+ progress   एकाजोग्राहराह।
+  1:   - Milestone RequirementAnalysis Completed
+  2:   - Milestone DatasetPreparation Completed
+  3:    -  Milestone AIModelPrototype InProgress
+  4:   - Milestone SchoolPilot Pending
+  5:  - Milestone Evaluation Pending
+  6:  - Milestone Deployment Pending
+12.  11 -    Step Prototype&PilotTesting
+ Prototype       तायराहनकाबदउस!स्ताजि!का   schoolenvironment  मा$  pilot    जिकायजोताह।  :  Examplemetric pilot स 
+ पहली50  मा$31    studentsselectedconcepts  मा$   belowtarget र्थी;   pilotintervention   काबद19   belowtarget  राह
+   ग्राए।यह का!ली   examplemetric  ह -  !स्ताजि!का  project  मा$    agreedevaluationmethodology  स   resultverify
+हग्रा।
+13.  12 -  Step ExpertValidation
+  - Innovation  क्य  solution  मा$  /  meaningfulimprovement noveltyह?
+  - Feasibility    क्यइस!स्ताजि!का  schools  मा$  deploy    जिकायजोसकाताह?
+  - Cost  क्य   ruralcontext  मा$  affordableह?
+  - Scalability          क्यइसबड़  स्तारापरालीग्रा/जिकायजोसकाताह?
+   - SocialImpact  क्य     learningoutcomesgenuinelyimprove हए?
+   - /    TechnicalPerformance model systemexpectedaccuracy  औरा  reliability  दताह?
+--- PAGE 5 ---
+26043 -   |  SIH EducationWorkflow Page 5
+  PossibleFinalStatus
+ /   /  /   Validated NeedsImprovement Rejected ReadyforDeployment
+14.  13 -  /   Step Government AdminDashboard  पर परिरणाम
+ Administrator  का  dashboard   पराका!ली  complaints   का
+सख्यनह
+,   बजि>काप/रा
+   innovationpipeline   जिदखुईदन
+चजिहए।
+Metric Example
+  EducationChallengesSubmitted 428
+Verified 231
+  AssignedtoUniversities 187
+ ActiveProjects 96
+ ValidatedSolutions 34
+-  Industry SupportedProjects  ExampleKPI
+15.  पर  - Workflow   एक नज़ र म 
+- -  End to EndFlow
+/   ->   ->   ->   ->  Citizen SchoolReport AICategorization DuplicateCheck HumanValidation UniversityMatching  
+->   ->   ->   -> /  UniversityAcceptance MultidisciplinaryTeam SolutionProposal Industry PartnerCollaboration  
+->  ->   ->   ->  ->  Prototype PilotTesting ExpertValidation Deployment ImpactTracking
+16.   सबस महैत्वपणा  - “Concept     हैम क् या बन रहै है ?”
+  Educationexample  मा$    “ -  -   ” finaluniversitysolution AI basedlearning gapdetectionsystem   हसकाता
+  ह।लीजिकान 043 SIH  का  context   मा$हमारा  platform  उस   specificapp      ताकास
+जिमातानह
+ह।हमारा  platform  एका
+  reusableecosystem   ह जो , , ,   Education Healthcare Agriculture WaterManagement  आजिदअलीग्रा-  अलीग्रा
+ domains      का
+!स्ताजि!कासमास्यओंकासह
+  institution  औरा -   solution developmentworkflow    ताकालीजोताह।
+    यदराखुन!ली
+एकालीइन
+“  Citizen   समास्यबताताह;  platform        समास्यकासमाझताऔरासह
+जोग्राहपहचताह; /  university partnersसमाधन 
+ बनताह(;  platform  प/रा
+  journey  का  validation  औरा  impact  ताका  track  ”काराताह।
+--- PAGE 6 ---
+26043 -   |  SIH EducationWorkflow Page 6
+17.  Presentation    म  इस क 
+स बली ?
+“            ,    Supposearuralschoolreportsthatmanystudentsareweakinmathematics butteacherscannot
+   .          . identifyindividuallearninggaps Ourplatformfirstcapturestheproblemwithevidenceandlocation
+     /  ,   ,     AIcategorizesitasanEducation EdTechchallenge checksforduplicates andsendstheverified
+       ,    .   challengetoauniversitywhoseexpertisematchesAI datascienceandeducation Theuniversityforms  
+  ,    ,     ,   amultidisciplinaryteam preparesasolutionproposal collaborateswithanEdTechpartner buildsa
+,     ,      .    prototype pilotsitintheschool andsubmitsmeasurableresultsforvalidation Theplatformtracksthe  
+          .”entirejourneyfromproblemsubmissiontovalidatedsolutionandsocialimpact
