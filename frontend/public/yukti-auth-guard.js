@@ -54,6 +54,23 @@
             return;
         }
 
+        // --- INJECT FETCH INTERCEPTOR FOR STATIC DASHBOARDS ---
+        var originalFetch = window.fetch;
+        window.fetch = function () {
+            var args = Array.prototype.slice.call(arguments);
+            if (typeof args[0] === 'string' && args[0].indexOf('/api/') === 0) {
+                var baseUrl = localStorage.getItem('yukti_backend_url');
+                if (baseUrl && baseUrl !== 'undefined' && baseUrl !== 'null') {
+                    // Prepend the production/external base URL
+                    args[0] = baseUrl + args[0];
+                }
+                // If baseUrl is not set (e.g., local dev), we leave '/api/...' alone 
+                // so the Vite Proxy or backend itself can handle it correctly.
+            }
+            return originalFetch.apply(this, args);
+        };
+        // -----------------------------------------------------
+
     } catch (e) {
         console.error('[YUKTI Auth Guard] Auth verification error:', e);
         window.location.href = '/login';

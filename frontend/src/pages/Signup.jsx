@@ -147,7 +147,7 @@ export default function Signup() {
         />
         <div className="relative z-10 max-w-md">
           <div className="inline-flex items-center bg-white px-3 py-2 rounded-lg shadow-lg">
-            <img src="../../public/Yuktilogo.jpeg" alt="YUKTI" className="h-[500px] w-auto object-contain" />
+            <img src="/Yuktilogo.jpeg" alt="YUKTI" className="h-[500px] w-auto object-contain" />
           </div>
           <h1 className="mt-10 text-3xl font-bold text-white leading-snug">
             Bring your problem, your expertise, or your resources —
@@ -166,7 +166,7 @@ export default function Signup() {
 
           <div className="lg:hidden flex justify-center mb-8">
             <div className="inline-flex items-center bg-white px-3 py-2 rounded-lg shadow-lg">
-              <img src="/yuktilogo.png" alt="YUKTI" className="h-[108px] w-auto object-contain" />
+              <img src="/Yuktilogo.jpeg" alt="YUKTI" className="h-[108px] w-auto object-contain" />
             </div>
           </div>
 
@@ -185,11 +185,10 @@ export default function Signup() {
                   key={key}
                   type="button"
                   onClick={() => setRole(key)}
-                  className={`flex-1 flex flex-col items-center gap-1.5 py-3.5 px-2 rounded-lg border text-xs font-semibold transition ${
-                    role === key
-                      ? 'bg-gradient-to-r from-[#0052cc]/40 to-[#00d2ff]/20 border-[#00d2ff] text-[#00d2ff] shadow-[0_0_12px_rgba(0,210,255,0.25)]'
-                      : 'bg-[#0f172a]/80 border-[#1e293b] text-[#cbd5e1] hover:border-[#00d2ff]/40 hover:text-white'
-                  }`}
+                  className={`flex-1 flex flex-col items-center gap-1.5 py-3.5 px-2 rounded-lg border text-xs font-semibold transition ${role === key
+                    ? 'bg-gradient-to-r from-[#0052cc]/40 to-[#00d2ff]/20 border-[#00d2ff] text-[#00d2ff] shadow-[0_0_12px_rgba(0,210,255,0.25)]'
+                    : 'bg-[#0f172a]/80 border-[#1e293b] text-[#cbd5e1] hover:border-[#00d2ff]/40 hover:text-white'
+                    }`}
                 >
                   <span className="text-xl">{r.icon}</span>
                   <span>{r.label}</span>
@@ -262,11 +261,10 @@ export default function Signup() {
                           key={d.value}
                           type="button"
                           onClick={() => toggleDomain(d.value)}
-                          className={`text-xs px-3 py-1.5 rounded-full border transition ${
-                            domains.includes(d.value)
-                              ? 'bg-[#00d2ff]/15 border-[#00d2ff] text-[#00d2ff]'
-                              : 'bg-transparent border-[#1e293b] text-[#94a3b8] hover:border-[#00d2ff]/40'
-                          }`}
+                          className={`text-xs px-3 py-1.5 rounded-full border transition ${domains.includes(d.value)
+                            ? 'bg-[#00d2ff]/15 border-[#00d2ff] text-[#00d2ff]'
+                            : 'bg-transparent border-[#1e293b] text-[#94a3b8] hover:border-[#00d2ff]/40'
+                            }`}
                         >
                           {d.label}
                         </button>
