@@ -10,20 +10,9 @@
 
         // --- BACKEND URL RESOLUTION LOGIC ---
         function resolveBackendBaseUrl() {
-            // 1. Explicitly configured window global
-            if (window.YUKTI_BACKEND_URL && typeof window.YUKTI_BACKEND_URL === 'string' && window.YUKTI_BACKEND_URL.trim() !== '') {
-                return window.YUKTI_BACKEND_URL.trim().replace(/\/+$/, '');
-            }
+            var hostname = window.location.hostname || '';
 
-            // 2. Explicitly stored in localStorage
-            try {
-                var stored = localStorage.getItem('yukti_backend_url');
-                if (stored && stored !== 'undefined' && stored !== 'null' && stored.trim() !== '') {
-                    return stored.trim().replace(/\/+$/, '');
-                }
-            } catch (e) {}
-
-            // 3. Query parameter ?backend=https://...
+            // 1. Query parameter ?backend=https://... (highest priority manual override)
             try {
                 var params = new URLSearchParams(window.location.search);
                 var qBackend = params.get('backend');
@@ -34,16 +23,26 @@
                 }
             } catch (e) {}
 
-            var hostname = window.location.hostname || '';
-
-            // 4. Local development: return empty string so relative '/api' is routed to Vite proxy or same-host
+            // 2. Local development: on localhost / 127.0.0.1, always use relative ''
+            // so '/api' requests are handled by Vite proxy to the local backend.
             if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0' || hostname === '') {
                 return '';
             }
 
+            // 3. Explicitly configured window global
+            if (window.YUKTI_BACKEND_URL && typeof window.YUKTI_BACKEND_URL === 'string' && window.YUKTI_BACKEND_URL.trim() !== '') {
+                return window.YUKTI_BACKEND_URL.trim().replace(/\/+$/, '');
+            }
+
+            // 4. Stored in localStorage (valid only for remote environments)
+            try {
+                var stored = localStorage.getItem('yukti_backend_url');
+                if (stored && stored !== 'undefined' && stored !== 'null' && stored.trim() !== '' && stored.indexOf('localhost') === -1) {
+                    return stored.trim().replace(/\/+$/, '');
+                }
+            } catch (e) {}
+
             // 5. Render deployment (*.onrender.com):
-            // On Render, frontend is a static site (e.g. yukti-frontend.onrender.com)
-            // and backend is a web service (e.g. yukti-backend.onrender.com).
             if (hostname.indexOf('.onrender.com') !== -1) {
                 var origin = window.location.origin;
                 if (origin.indexOf('-frontend') !== -1) {
@@ -109,23 +108,42 @@
                             }
                         }
                     }
+
+                    // Auto-attach authorization token if not already present
+                    init = init || {};
+                    var hasAuth = false;
+                    if (init.headers) {
+                        if (init.headers instanceof Headers) {
+                            hasAuth = init.headers.has('Authorization') || init.headers.has('authorization');
+                        } else if (typeof init.headers === 'object') {
+                            hasAuth = Boolean(init.headers['Authorization'] || init.headers['authorization']);
+                        }
+                    }
+                    if (!hasAuth) {
+                        var authToken = localStorage.getItem('token') || localStorage.getItem('yukti_token') || localStorage.getItem('access_token') || sessionStorage.getItem('token');
+                        if (authToken) {
+                            if (!init.headers) {
+                                init.headers = { 'Authorization': 'Bearer ' + authToken };
+                            } else if (init.headers instanceof Headers) {
+                                init.headers.set('Authorization', 'Bearer ' + authToken);
+                            } else {
+                                init.headers['Authorization'] = 'Bearer ' + authToken;
+                            }
+                        }
+                    }
                 }
 
                 return originalFetch.call(this, input, init).then(function (res) {
                     // Safety protection for API responses:
-                    // If a static server (like Render static site) rewrote /api to /index.html and returned HTML,
-                    // or if an error returned HTML, prevent `res.json()` from crashing with SyntaxError.
                     var ctype = res.headers.get('content-type') || '';
                     if (isApiCall && ctype.indexOf('text/html') !== -1) {
                         console.warn('[YUKTI API Interceptor] HTML returned for API endpoint:', url || input, '\nTarget was:', input);
-                        var originalJson = res.json.bind(res);
                         res.json = function () {
                             return res.text().then(function (text) {
                                 try {
                                     return JSON.parse(text);
                                 } catch (parseErr) {
                                     console.warn('[YUKTI API] Safe JSON fallback for HTML response:', text.substring(0, 100));
-                                    // Collections fallback to empty array, objects to empty object
                                     if (url.indexOf('proposals') !== -1 || url.indexOf('problems') !== -1 || url.indexOf('users') !== -1) {
                                         return [];
                                     }
@@ -135,6 +153,16 @@
                         };
                     }
                     return res;
+                }).catch(function (netErr) {
+                    console.warn('[YUKTI API Network Warning]:', (netErr && netErr.message) || netErr, 'for endpoint:', url || input);
+                    if (isApiCall) {
+                        var isList = url && (url.indexOf('proposals') !== -1 || url.indexOf('problems') !== -1 || url.indexOf('users') !== -1);
+                        return new Response(JSON.stringify(isList ? [] : {}), {
+                            status: 200,
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                    }
+                    throw netErr;
                 });
             };
         }

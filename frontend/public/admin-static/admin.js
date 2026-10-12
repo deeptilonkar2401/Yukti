@@ -345,10 +345,20 @@ window.mergeDuplicatePrompt = function(primaryId) {
     }
 };
 
+function getAuthHeaders(){
+  const token = localStorage.getItem('token') ||
+                localStorage.getItem('access_token') ||
+                localStorage.getItem('yukti_token') ||
+                sessionStorage.getItem('token') ||
+                sessionStorage.getItem('access_token') ||
+                sessionStorage.getItem('yukti_token');
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
+}
+
 // Async fetch live problems from backend if connected
 async function fetchLiveAdminData() {
     try {
-        const res = await fetch('/api/problems');
+        const res = await fetch('/api/problems', { headers: getAuthHeaders() });
         if (res.ok) {
             const data = await res.json();
             if (Array.isArray(data) && data.length > 0) {
@@ -1176,7 +1186,7 @@ let PENDING_USERS = [];
 
 async function fetchLivePendingUsers() {
   try {
-    const res = await fetch('/api/users/pending-verification');
+    const res = await fetch('/api/users/pending-verification', { headers: getAuthHeaders() });
     if (res.ok) {
       const data = await res.json();
       PENDING_USERS = Array.isArray(data) ? data : [];
@@ -1264,7 +1274,7 @@ function renderPendingUsers() {
 
 async function approveRegistration(userId) {
   try {
-    const res = await fetch(`/api/users/${userId}/verify`, { method: 'PATCH' });
+    const res = await fetch(`/api/users/${userId}/verify`, { method: 'PATCH', headers: getAuthHeaders() });
     if (res.ok) {
       toast('Registration request approved! Account verified.');
       fetchLivePendingUsers();
@@ -1278,7 +1288,7 @@ async function approveRegistration(userId) {
 
 async function rejectRegistration(userId) {
   try {
-    const res = await fetch(`/api/users/${userId}/reject`, { method: 'PATCH' });
+    const res = await fetch(`/api/users/${userId}/reject`, { method: 'PATCH', headers: getAuthHeaders() });
     if (res.ok) {
       toast('Registration request rejected.');
       fetchLivePendingUsers();
@@ -1314,7 +1324,7 @@ window.showVerifySubtab = function(type) {
 
 async function fetchLiveProposals() {
   try {
-    const res = await fetch('/api/proposals');
+    const res = await fetch('/api/proposals', { headers: getAuthHeaders() });
     if (res.ok) {
       const data = await res.json();
       PROPOSALS = Array.isArray(data) ? data : [];
@@ -1381,7 +1391,7 @@ window.approveProposal = async function(proposalId) {
   try {
     const res = await fetch(`/api/proposals/${proposalId}/status`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
       body: JSON.stringify({ status: 'approved' })
     });
     if (res.ok) {
@@ -1397,7 +1407,7 @@ window.rejectProposal = async function(proposalId) {
   try {
     const res = await fetch(`/api/proposals/${proposalId}/status`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
       body: JSON.stringify({ status: 'rejected' })
     });
     if (res.ok) {
