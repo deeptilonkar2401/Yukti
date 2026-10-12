@@ -10,11 +10,11 @@ services:
       - key: PYTHON_VERSION
         value: 3.10.0
       - key: DATABASE_URL
-        value: sqlite:///./yukti_local.db  # Only for MVP. For production, switch to PostgreSQL.
+        value: postgresql+psycopg2://postgres.uzezdwmeauuoxshqvqyf:tzAN2FrqvQCvLBR4@aws-0-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require
       - key: FRONTEND_URL
         value: https://yukti-frontend.onrender.com  # This will be replaced by your actual frontend URL if different.
       - key: SECRET_KEY
-        value: YOUR_SUPER_SECRET_KEY_HERE
+        value: 0d44d58074e8309035ae3e94652d303d50f8c92e126def9b0e3c53b235710b1e
       
   # Frontend React (Vite) Service
   - type: web
