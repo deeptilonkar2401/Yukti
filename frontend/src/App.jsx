@@ -27,6 +27,13 @@ function ConditionalNavbar() {
   return null;
 }
 
+function ExternalRedirect({ to }) {
+  React.useEffect(() => {
+    window.location.href = to;
+  }, [to]);
+  return null;
+}
+
 function AppRoutes() {
   return (
     <>
@@ -40,6 +47,9 @@ function AppRoutes() {
           <Route path="/my-problems" element={<MyProblemsPage />} />
           <Route path="/submit" element={<SubmitProblem />} />
           <Route path="/map" element={<MapView />} />
+          <Route path="/admin" element={<ExternalRedirect to="/admin-static/admin.html" />} />
+          <Route path="/university" element={<ExternalRedirect to="/university/university.html" />} />
+          <Route path="/industry" element={<ExternalRedirect to="/industry/industry.html" />} />
           <Route path="/project-manager" element={<ProjectManagerPage />} />
           <Route path="/project-manager/:id" element={<ProjectManagerPage />} />
           <Route path="/projects/:id" element={<ProjectManagerPage />} />

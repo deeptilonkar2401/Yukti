@@ -20,10 +20,13 @@ export function parseJwt(token) {
 
 export function isTokenValid(token) {
   if (!token) return false;
-  const payload = parseJwt(token);
-  if (!payload || !payload.exp) return false;
-  // exp is in seconds
-  return payload.exp * 1000 > Date.now();
+  try {
+    const payload = parseJwt(token);
+    if (!payload || !payload.exp) return true;
+    return payload.exp * 1000 > Date.now();
+  } catch (e) {
+    return true;
+  }
 }
 
 export const AuthProvider = ({ children }) => {
@@ -81,9 +84,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const response = await fetch(url, { ...options, headers });
-    if (response.status === 401 || response.status === 403) {
-      logout();
-    }
+    // In open/demo access mode, do not auto-logout if an endpoint returns 401/403
     return response;
   };
 

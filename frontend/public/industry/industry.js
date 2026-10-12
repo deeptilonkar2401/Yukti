@@ -508,8 +508,9 @@ document.addEventListener("DOMContentLoaded", () => {
     async function fetchLiveProjects() {
         try {
             const res = await fetch('/api/problems?status_filter=verified', { headers: getAuthHeaders() });
-            const data = await res.json();
-            if (Array.isArray(data) && data.length > 0) {
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data) && data.length > 0) {
                 MATCHED_PROJECTS.length = 0;
                 data.forEach(p => {
                     MATCHED_PROJECTS.push({
@@ -538,6 +539,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 renderRecentGrid();
                 renderMatchingView();
             }
+          }
         } catch (e) {}
     }
     fetchLiveProjects();

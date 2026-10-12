@@ -349,20 +349,21 @@ window.mergeDuplicatePrompt = function(primaryId) {
 async function fetchLiveAdminData() {
     try {
         const res = await fetch('/api/problems');
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-            PROBLEMS.length = 0;
-            data.forEach(p => {
-                PROBLEMS.push({
-                    id: p.id ? p.id.substring(0, 8).toUpperCase() : 'YKT-100',
-                    db_id: p.id,
-                    title: p.title,
-                    domain: p.domain || 'Urban Infrastructure',
-                    subdomain: p.subdomain || 'Infrastructure Management',
-                    priority: p.priority ? (p.priority.charAt(0).toUpperCase() + p.priority.slice(1)) : 'Medium',
-                    aiPriorityScore: p.priority === 'critical' ? 95 : (p.priority === 'high' ? 88 : 75),
-                    location: p.location_text || 'Jharkhand',
-                    geotag: p.location_text ? p.location_text : '23.3441° N, 85.3096° E',
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+                PROBLEMS.length = 0;
+                data.forEach(p => {
+                    PROBLEMS.push({
+                        id: p.id ? p.id.substring(0, 8).toUpperCase() : 'YKT-100',
+                        db_id: p.id,
+                        title: p.title,
+                        domain: p.domain || 'Urban Infrastructure',
+                        subdomain: p.subdomain || 'Infrastructure Management',
+                        priority: p.priority ? (p.priority.charAt(0).toUpperCase() + p.priority.slice(1)) : 'Medium',
+                        aiPriorityScore: p.priority === 'critical' ? 95 : (p.priority === 'high' ? 88 : 75),
+                        location: p.location_text || 'Jharkhand',
+                        geotag: p.location_text ? p.location_text : '23.3441° N, 85.3096° E',
                     lat: p.latitude || 23.3441,
                     lng: p.longitude || 85.3096,
                     population: p.population_affected || '100+ Citizens',
@@ -383,6 +384,7 @@ async function fetchLiveAdminData() {
             });
             renderAll();
         }
+      }
     } catch(e) {}
 }
 fetchLiveAdminData();
@@ -471,7 +473,11 @@ async function renderImpact(){
       headers: impactAuthHeaders(),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    impactData = await res.json();
+    const data = await res.json();
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      throw new Error('Invalid analytics response format');
+    }
+    impactData = data;
     if (loadEl) loadEl.style.display = 'none';
     renderImpactFromData(impactData);
     populateImpactSectorOptions(impactData);
@@ -1173,7 +1179,7 @@ async function fetchLivePendingUsers() {
     const res = await fetch('/api/users/pending-verification');
     if (res.ok) {
       const data = await res.json();
-      PENDING_USERS = data || [];
+      PENDING_USERS = Array.isArray(data) ? data : [];
       renderPendingUsers();
     }
   } catch (err) {
@@ -1311,7 +1317,7 @@ async function fetchLiveProposals() {
     const res = await fetch('/api/proposals');
     if (res.ok) {
       const data = await res.json();
-      PROPOSALS = data || [];
+      PROPOSALS = Array.isArray(data) ? data : [];
       renderProposalsQueue();
     }
   } catch(err) {

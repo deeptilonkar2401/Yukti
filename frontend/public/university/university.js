@@ -35,8 +35,9 @@ async function fetchLiveUniversityProblems() {
 
     try {
         const res = await fetch('/api/problems');
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
             citizenProblems.length = 0;
             data.forEach(p => {
                 const uniqueCode = p.id ? `YKT-${p.id.substring(0, 6).toUpperCase()}` : 'YKT-100';
@@ -79,6 +80,7 @@ async function fetchLiveUniversityProblems() {
             populateSelects();
             renderPipeline();
         }
+      }
     } catch(e) {
         console.warn('Could not load live problems:', e);
     }
